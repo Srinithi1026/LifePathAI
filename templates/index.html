@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LifePathAI - Smart Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: white;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🚀 LifePathAI - Discover Your Career Path</h2>
+        <form action="/" method="POST">
+            <label>👤 Name:</label>
+            <input type="text" name="name" required>
+
+            <label>🎂 Age:</label>
+            <input type="number" name="age" required>
+
+            <label>🎯 Area of Interest:</label>
+            <select name="interest" required>
+                <option value="AI">AI</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Design">Design</option>
+                <option value="Business">Business</option>
+            </select>
+
+            <label>🛠️ Skills:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" name="skills" value="Coding"> Coding<br>
+                <input type="checkbox" name="skills" value="Teaching"> Teaching<br>
+                <input type="checkbox" name="skills" value="Design"> Design<br>
+                <input type="checkbox" name="skills" value="Management"> Management
+            </div>
+
+            <label>😊 Mood:</label>
+            <select name="mood" required>
+                <option value="Happy">Happy</option>
+                <option value="Sad">Sad</option>
+                <option value="Neutral">Neutral</option>
+            </select>
+
+            <input type="submit" value="Get Suggestion">
+        </form>
+    </div>
+</body>
+</html>

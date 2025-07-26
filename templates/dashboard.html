@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LifePathAI - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f2f2f2; }
+        h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        canvas { background: #fff; margin-top: 30px; border: 1px solid #ccc; }
+        .quote-box {
+            margin-top: 20px;
+            background: #e0f7fa;
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧠 LifePathAI - Dashboard</h2>
+<a href="/">← Back to Form</a>
+
+<div class="quote-box">
+    🌟 <strong>Motivational Quote:</strong> <em>{{ quote }}</em>
+</div>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Interest</th>
+        <th>Skills</th>
+        <th>Mood</th>
+        <th>Suggestion</th>
+    </tr>
+    {% for entry in entries %}
+    <tr>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.interest }}</td>
+        <td>{{ entry.skills }}</td>
+        <td>{{ entry.mood }}</td>
+        <td>{{ entry.suggestion }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Interest</th>
+        <th>Skills</th>
+        <th>Mood</th>
+        <th>Suggestion</th>
+        <th>Download</th> <!-- New column -->
+    </tr>
+    {% for entry in entries %}
+    <tr>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.interest }}</td>
+        <td>{{ entry.skills }}</td>
+        <td>{{ entry.mood }}</td>
+        <td>{{ entry.suggestion }}</td>
+        <td><a href="/download/{{ loop.index0 }}" target="_blank">PDF</a></td> <!-- New button -->
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h3>Mood Trend Chart</h3>
+<canvas id="moodChart" width="400" height="200"></canvas>
+
+<h3>Career Prediction Count</h3>
+<canvas id="careerChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const moodData = {
+        labels: ['Happy', 'Sad', 'Neutral'],
+        datasets: [{
+            label: 'Mood Count',
+            data: [{{ mood_count['Happy'] }}, {{ mood_count['Sad'] }}, {{ mood_count['Neutral'] }}],
+            backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
+            borderColor: ['#388E3C', '#D32F2F', '#FFA000'],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: moodData,
+        options: {
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('moodChart'), config);
+
+    // New Career Graph
+    const careerLabels = {{ career_count.keys()|list|tojson }};
+    const careerData = {{ career_count.values()|list|tojson }};
+
+    const careerChartConfig = {
+        type: 'bar',
+        data: {
+            labels: careerLabels,
+            datasets: [{
+                label: 'Career Suggestions',
+                data: careerData,
+                backgroundColor: '#42a5f5',
+                borderColor: '#1e88e5',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('careerChart'), careerChartConfig);
+</script>
+<!-- Chatbot UI -->
+<style>
+#chatbot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+#chatlog {
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+#userInput {
+    width: 75%;
+    padding: 5px;
+}
+#sendBtn {
+    width: 20%;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+</style>
+
+<div id="chatbot">
+    <div><strong>🤖 Chat with LifePathAI</strong></div>
+    <div id="chatlog"></div>
+    <input type="text" id="userInput" placeholder="Ask me something...">
+    <button id="sendBtn">Send</button>
+</div>
+
+<script>
+document.getElementById("sendBtn").onclick = async function () {
+    const userMsg = document.getElementById("userInput").value;
+    if (userMsg.trim() === "") return;
+
+    const chatlog = document.getElementById("chatlog");
+    chatlog.innerHTML += "<div><strong>You:</strong> " + userMsg + "</div>";
+
+    const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMsg })
+    });
+    const data = await response.json();
+    chatlog.innerHTML += "<div><strong>Bot:</strong> " + data.reply + "</div>";
+
+    document.getElementById("userInput").value = "";
+    chatlog.scrollTop = chatlog.scrollHeight;
+};
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+SRINITHI V,21,AI,Design,Happy,Explore more skills
+SRINITHI V,21,Design,Coding,Happy,Explore more skills to find your career path
+SRINITHI V,21,AI,Coding,Happy,AI Developer
+sri,20,Business,Management,Neutral,Explore more skills to find your career path
+laks,20,Healthcare,Coding,Sad,Explore more skills to find your career path
+esakki,40,Design,Teaching,Happy,UX Designer
+sri,21,AI,Coding,Neutral,AI Developer
+vijay,40,Business,Management,Neutral,UI Designer
